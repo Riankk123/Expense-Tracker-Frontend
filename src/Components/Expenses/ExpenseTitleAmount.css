@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+  flex-direction: row;
+}
+.fonts {
+  font-weight: bolder;
+  color: #e5f7ab;
+  margin: 0;
+}

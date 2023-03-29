@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css?family=Tangerine");
+
+.primary-nav {
+  width: 100%;
+  margin-bottom: 20px;
+  font-family: "Tangerine", serif;
+  font-size: 1rem;
+  display: inline-block;
+}
+
+nav a {
+  margin-right: 16px;
+}
+.heading-title {
+  font-size: large;
+  font-family: "arial";
+}
