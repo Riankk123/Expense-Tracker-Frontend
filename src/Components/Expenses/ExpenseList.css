@@ -5,5 +5,11 @@
   align-items: center;
 }
 .no-expense {
+  font-family: 'Times New Roman', Times, serif;
   color: #a8e890;
+  font-size: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px 15px;
+  min-height: 25px;
+  border-radius: 25px;
 }

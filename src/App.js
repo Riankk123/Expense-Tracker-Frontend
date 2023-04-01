@@ -1,4 +1,3 @@
-import ExpensesAndForm from "./Components/ExpensesAndForm/ExpensesAndForm";
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useCallback } from "react";
@@ -6,6 +5,7 @@ import { expenseAction } from "./Store/expenses";
 import Navbar from "./Components/Navbar/Navbar";
 import Login from "./Components/Authentication/Login";
 import { Routes, Route } from "react-router-dom";
+import ExpensesAndForm from './Components/ExpensesAndForm/ExpensesAndForm';
 const App = () => {
   const expenses = useSelector((state) => state.expense.expenses);
   const isChanged = useSelector((state) => state.expense.changed);
@@ -56,7 +56,7 @@ const App = () => {
   }, [dispatch, getExpense]);
   return (
     <div className="App">
-      <Navbar />
+      <h1>Expensio</h1>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<ExpensesAndForm />} />
