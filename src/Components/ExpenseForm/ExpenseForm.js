@@ -40,7 +40,6 @@ const ExpenseForm = (props) => {
     setAmount("");
     setDate("");
     setTitle("");
-    props.changeEditingState();
   };
   return (
     // <form className="form-container" onSubmit={submitHandler}>
@@ -103,7 +102,7 @@ const ExpenseForm = (props) => {
         />
         <div className="button-flex-expense">
           <button onClick={submitHandler}>Submit</button>
-          <button onClick={changeEditState}>Cancel</button>
+          <button onClick={changeEditState}>Reset</button>
         </div>
       </div>
     </form>

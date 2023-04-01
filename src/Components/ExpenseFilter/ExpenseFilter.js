@@ -5,7 +5,7 @@ const ExpenseFilter = (props) => {
   };
   return (
     <div className="container-filter">
-      <label className="tcolor">Select Year</label>
+      <label className="tcolor">Select Year </label>
       <select
         className="fcolor"
         value={props.selectedYear}

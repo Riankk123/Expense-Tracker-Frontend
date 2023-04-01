@@ -1,9 +1,13 @@
 .tcolor {
   color: #e5f7ab;
+  font-size: 20px;
 }
 .container-filter {
   margin: 1rem;
 }
 .fcolor {
-  border-radius: 20px;
+  border-radius: 15px;
+  margin-left: 5px;
+  width: 70px;
+  height: 30px;
 }
