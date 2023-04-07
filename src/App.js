@@ -1,4 +1,5 @@
 import "./App.css";
+import { AiOutlinePoweroff } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useCallback } from "react";
 import { expenseAction } from "./Store/expenses";
@@ -58,6 +59,7 @@ const App = () => {
   return (
     <div className="App">
       <h1>Expensio</h1>
+      <AiOutlinePoweroff className="icon-logout" size = {32}/>
       <Routes>
         <Route path="/" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
