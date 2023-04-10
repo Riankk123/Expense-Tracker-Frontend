@@ -1,11 +1,13 @@
 import "./App.css";
+import { AiOutlinePoweroff } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useCallback } from "react";
 import { expenseAction } from "./Store/expenses";
-import Navbar from "./Components/Navbar/Navbar";
-import Login from "./Components/Authentication/Login";
+
 import { Routes, Route } from "react-router-dom";
-import ExpensesAndForm from './Components/ExpensesAndForm/ExpensesAndForm';
+import ExpensesAndForm from "./Components/ExpensesAndForm/ExpensesAndForm";
+import LoginForm from "./Components/Authentication/Login";
+import RegisterForm from "./Components/Authentication/Register";
 const App = () => {
   const expenses = useSelector((state) => state.expense.expenses);
   const isChanged = useSelector((state) => state.expense.changed);
@@ -35,13 +37,13 @@ const App = () => {
     const data = [];
     console.log("Adding Data", data);
   }, [expenses]);
-  
+
   useEffect(() => {
     console.log("Adding Data", isChanged);
     if (isChanged === false) return;
     addExpense();
   }, [addExpense, expenses, isChanged]);
-  
+
   useEffect(() => {
     async function fetchExpense() {
       try {
@@ -57,8 +59,10 @@ const App = () => {
   return (
     <div className="App">
       <h1>Expensio</h1>
+      <AiOutlinePoweroff className="icon-logout" size = {32}/>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<RegisterForm />} />
+        <Route path="/login" element={<LoginForm />} />
         <Route path="/home" element={<ExpensesAndForm />} />
       </Routes>
     </div>

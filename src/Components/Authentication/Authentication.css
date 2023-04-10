@@ -8,6 +8,7 @@
   padding: 20px 15px;
   min-height: 250px;
   margin-top: 80px;
+  border-radius: 10px;
 }
 
 input {
@@ -20,6 +21,7 @@ input {
   color: white;
   width: 200px;
   transition: border-color 1s;
+  font-size: large;
 }
 
 input:focus {
@@ -68,15 +70,19 @@ input:focus {
   text-align: center;
   transition: 0.5s;
 }
+.alternate_div {
+  color: white;
+  text-decoration: none;
+  display: block;
+  margin: 15px;
+  text-align: center;
+  transition: 0.5s;
+}
+.alternate_div:hover {
+  color: rgb(185, 178, 178);
+}
 .form a:hover {
   color: royalblue;
-}
-
-.login {
-  display: none;
-}
-.reg {
-  display: none;
 }
 
 .show-page {
