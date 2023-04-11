@@ -1,17 +1,22 @@
 import "./App.css";
 import { AiOutlinePoweroff } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useContext } from "react";
 import { expenseAction } from "./Store/expenses";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import ExpensesAndForm from "./Components/ExpensesAndForm/ExpensesAndForm";
 import LoginForm from "./Components/Authentication/Login";
 import RegisterForm from "./Components/Authentication/Register";
+import AuthContext from "./Store/auth-context";
+
 const App = () => {
   const expenses = useSelector((state) => state.expense.expenses);
   const isChanged = useSelector((state) => state.expense.changed);
+  const authCtx = useContext(AuthContext);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const getExpense = useCallback(async () => {
     // const response = await fetch(
     //   "https://fir-97734-default-rtdb.firebaseio.com/expenses.json"
@@ -21,6 +26,7 @@ const App = () => {
     const data = [];
     return data;
   }, []);
+
   const addExpense = useCallback(async () => {
     // const response = await fetch(
     //   "https://fir-97734-default-rtdb.firebaseio.com/expenses.json",
@@ -37,6 +43,11 @@ const App = () => {
     const data = [];
     console.log("Adding Data", data);
   }, [expenses]);
+
+  const logoutHandler = () => {
+    authCtx.logout();
+    navigate("/login");
+  };
 
   useEffect(() => {
     console.log("Adding Data", isChanged);
@@ -56,14 +67,26 @@ const App = () => {
     }
     fetchExpense();
   }, [dispatch, getExpense]);
+
   return (
     <div className="App">
       <h1>Expensio</h1>
-      <AiOutlinePoweroff className="icon-logout" size = {32}/>
+      {authCtx.isLoggedIn && (
+        <AiOutlinePoweroff
+          onClick={logoutHandler}
+          className="icon-logout"
+          size={32}
+        />
+      )}
       <Routes>
-        <Route path="/" element={<RegisterForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/home" element={<ExpensesAndForm />} />
+        {!authCtx.isLoggedIn && <Route path="/" element={<RegisterForm />} />}
+        {authCtx.isLoggedIn && <Route path="/" element={<Navigate to={`/home/${authCtx.personId}`} replace />} />}
+        {!authCtx.isLoggedIn && <Route path="/login" element={<LoginForm />} />}
+        {authCtx.isLoggedIn && <Route path="/login" element={<Navigate to={`/home/${authCtx.personId}`} replace />} />}
+        {authCtx.isLoggedIn && <Route path={`/home/${authCtx.personId}`} element={<ExpensesAndForm />} />}
+        {!authCtx.isLoggedIn && <Route path={`/home/${authCtx.personId}`} element={<Navigate to="/login" replace />} />}
+        {!authCtx.isLoggedIn && <Route path='*' element={<Navigate to="/login" replace />} />}
+        {authCtx.isLoggedIn && <Route path='*' element={<Navigate to={`/home/${authCtx.personId}`} replace />} />}
       </Routes>
     </div>
   );

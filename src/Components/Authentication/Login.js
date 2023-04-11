@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // import {
 //   createUserWithEmailAndPassword,
@@ -9,7 +9,10 @@ import "./Authentication.css";
 
 // import { auth } from "./firebase-config";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../Store/auth-context";
+
 const LoginForm = () => {
+  const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -25,49 +28,37 @@ const LoginForm = () => {
     // });
   }, []);
 
-  const loginUser = async () => {
+  const loginUser = async (event) => {
+    event.preventDefault();
     try {
-      // const user = await signInWithEmailAndPassword(
-      //   auth,
-      //   enteredEmail,
-      //   enteredPassword
-      // );
+      const response = await fetch('http://localhost:8080/authenticate', {
+        method: 'POST',
+        body: JSON.stringify({
+          emailId: enteredEmail,
+          password: enteredPassword
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('You provided an incorrect email or password');
+      }
+
+      const data = await response.json();
+      const expirationTime = new Date(new Date().getTime() + data.expiresIn);
+      authCtx.login(response.headers.get('Authorization').slice(7), expirationTime.toISOString(), data.personId);
 
       setEnteredEmail("");
       setEnteredPassword("");
-      navigate("/home");
+      navigate(`/home/${data.personId}`);
     } catch (error) {
       console.log(error.message);
     }
   };
   return (
-    // <div className="form-container">
-    //   <div className="fields">
-    //     <label>Email</label>
-    //     <input
-    //       type="email"
-    //       value={enteredEmail}
-    //       onChange={emailChangeHandler}
-    //     />
-    //   </div>
-    //   <div className="fields">
-    //     <label>Password</label>
-    //     <input
-    //       type="password"
-    //       value={enteredPassword}
-    //       onChange={passwordChangeHandler}
-    //     />
-    //   </div>
-    //   <div className="button-flex fields">
-    //     <button className="button-item success-button" onClick={registerUser}>
-    //       Register
-    //     </button>
-    //     <button className="button-item success-button" onClick={loginUser}>
-    //       Login
-    //     </button>
-    //   </div>
-    // </div>
-    <form action="" className="form">
+    <form onSubmit={loginUser} className="form">
       <div className="login show-page">
         <input
           type="email"
@@ -81,15 +72,15 @@ const LoginForm = () => {
           onChange={passwordChangeHandler}
           placeholder="Password"
         />
-        <button onClick={loginUser}>Login</button>
-        <div
+        <button className='centre' type="submit">Login</button>
+        <button
           onClick={() => {
             navigate("/");
           }}
           className="alternate_div"
         >
           Register
-        </div>
+        </button>
       </div>
     </form>
   );

@@ -11,6 +11,10 @@
   border-radius: 10px;
 }
 
+.centre {
+  margin-right: 30px;
+}
+
 input {
   display: block;
   outline: none;
@@ -88,6 +92,7 @@ input:focus {
 .show-page {
   display: block;
   animation: show-page 1s;
+  text-align: center;
 }
 
 @keyframes show-page {
