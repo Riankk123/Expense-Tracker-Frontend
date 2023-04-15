@@ -6,35 +6,54 @@ const RegisterForm = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [enteredName, setEnteredName] = useState("");
-  const [enteredAge, setEnteredAge] = useState();
+  const [enteredAge, setEnteredAge] = useState("");
+
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
   };
+
   const passwordChangeHandler = (event) => {
     setEnteredPassword(event.target.value);
   };
+
   const nameChangeHandler = (event) => {
     setEnteredName(event.target.value);
   };
+
   const ageChangeHandler = (event) => {
     setEnteredAge(event.target.value);
   };
-  const registerUser = async () => {
+
+  const registerUser = async (event) => {
+    event.preventDefault();
     try {
-      // const user = await createUserWithEmailAndPassword(
-      //   auth,
-      //   enteredEmail,
-      //   enteredPassword
-      // );
+      const response = await fetch("http://localhost:8080/person/addPerson", {
+        method: "POST",
+        body: JSON.stringify({
+          name: enteredName,
+          emailId: enteredEmail,
+          password: enteredPassword,
+          age: enteredAge,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+
       setEnteredEmail("");
       setEnteredPassword("");
-      navigate("home");
+      navigate("/login");
     } catch (error) {
       console.log(error.message);
     }
   };
+
   return (
-    <form action="" className="form">
+    <form onSubmit={registerUser} className="form">
       <div className="reg">
         <input
           type="name"
@@ -60,15 +79,17 @@ const RegisterForm = () => {
           onChange={passwordChangeHandler}
           placeholder="Password"
         />
-        <button onClick={registerUser}>Register</button>
-        <div
+        <button className="centre" type="submit">
+          Register
+        </button>
+        <button
           onClick={() => {
             navigate("login");
           }}
           className="alternate_div"
         >
           Login
-        </div>
+        </button>
       </div>
     </form>
   );
