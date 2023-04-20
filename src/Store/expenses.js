@@ -12,19 +12,20 @@ const expenseSlice = createSlice({
     },
     addExpense(state, action) {
       const newExpense = {
-        id: action.payload.id,
+        expenseId: action.payload.id,
         title: action.payload.title,
         amount: action.payload.amount,
-        day: action.payload.day,
-        month: action.payload.month,
-        year: action.payload.year,
+        amountDate: action.payload.date,
+        // day: action.payload.day,
+        // month: action.payload.month,
+        // year: action.payload.year,
       };
       state.expenses = [newExpense, ...state.expenses];
       state.changed = true;
     },
     deleteExpense(state, action) {
       state.expenses = state.expenses.filter(
-        (expense) => expense.id !== action.payload.id
+        (expense) => expense.expenseId !== action.payload.id
       );
       state.changed = true;
     },

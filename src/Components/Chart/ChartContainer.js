@@ -50,7 +50,13 @@ const ChartContainer = (props) => {
   monthToIndex.set("Nov", 10);
   monthToIndex.set("Dec", 11);
   for (var i = 0; i < props.expenses.length; i++) {
-    dataValues[monthToIndex.get(props.expenses[i].month)] += Number(
+    const dummyMonth = new Date(props.expenses[i].amountDate)
+      .toLocaleString("en-US", {
+        month: "short",
+      })
+      .toString();
+
+    dataValues[monthToIndex.get(dummyMonth)] += Number(
       props.expenses[i].amount
     );
   }
