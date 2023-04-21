@@ -10,8 +10,10 @@ const ExpenseList = (props) => {
     setFilteredYear(value);
   };
   var expensesList = useSelector((state) => state.expense.expenses);
+  console.log("ExpenseList : ", expensesList);
   expensesList = expensesList.filter(
-    (expense) => expense.year.toString() === filteredYear
+    (expense) =>
+      new Date(expense.amountDate).getFullYear().toString() === filteredYear
   );
   return (
     <div className="container">
@@ -24,12 +26,16 @@ const ExpenseList = (props) => {
         expensesList.map((expenses) => (
           <ExpenseUnit
             amount={expenses.amount}
-            key={expenses.id}
+            key={expenses.expenseId}
             title={expenses.title}
-            day={expenses.day}
-            month={expenses.month}
-            year={expenses.year}
-            id={expenses.id}
+            day={new Date(expenses.amountDate).toLocaleString("en-US", {
+              day: "2-digit",
+            })}
+            month={new Date(expenses.amountDate).toLocaleString("en-US", {
+              month: "short",
+            })}
+            year={new Date(expenses.amountDate).getFullYear()}
+            id={expenses.expenseId}
           />
         ))}
       {expensesList.length === 0 && (

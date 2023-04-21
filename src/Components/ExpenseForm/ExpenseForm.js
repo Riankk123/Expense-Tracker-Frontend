@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useContext, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import "./ExpenseForm.css";
 import { expenseAction } from "../../Store/expenses";
+import AuthContext from "../../Store/auth-context";
 
 const ExpenseForm = (props) => {
   const [enteredTitle, setTitle] = useState("");
   const [enteredAmount, setAmount] = useState("");
   const [enteredDate, setDate] = useState("");
   const dispatch = useDispatch();
+  const authCtx = useContext(AuthContext);
+  const personId = authCtx.personId;
+  const token = authCtx.token;
   const amountChangeHandler = (event) => {
     setAmount(event.target.value);
   };
@@ -17,20 +21,49 @@ const ExpenseForm = (props) => {
   const titleChangeHandler = (event) => {
     setTitle(event.target.value);
   };
+
+  const addExpense = useCallback(
+    async (newExpense) => {
+      const response = await fetch(
+        "http://localhost:8080/expenses/addExpense/" + personId,
+        {
+          crossDomain: true,
+          method: "POST",
+          body: JSON.stringify(newExpense),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await response.json();
+      dispatch(
+        expenseAction.addExpense({
+          id: data.expenseId,
+          title: data.title,
+          amount: data.amount,
+          date: data.amountDate,
+          // month: new Date(data.amountDate).toLocaleString("en-US", {
+          //   month: "short",
+          // }),
+          // day: new Date(data.amountDate).toLocaleString("en-US", {
+          //   day: "2-digit",
+          // }),
+          // year: new Date(data.amountDate).getFullYear(),
+        })
+      );
+    },
+    [personId, token, dispatch]
+  );
+
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(
-      expenseAction.addExpense({
-        id: Math.random().toString(),
-        title: enteredTitle,
-        amount: enteredAmount,
-        month: new Date(enteredDate).toLocaleString("en-US", {
-          month: "short",
-        }),
-        day: new Date(enteredDate).toLocaleString("en-US", { day: "2-digit" }),
-        year: new Date(enteredDate).getFullYear(),
-      })
-    );
+    const newExpense = {
+      title: enteredTitle,
+      amountDate: enteredDate,
+      amount: enteredAmount,
+    };
+    addExpense(newExpense);
     setAmount("");
     setDate("");
     setTitle("");
@@ -43,41 +76,6 @@ const ExpenseForm = (props) => {
   };
 
   return (
-    // <form className="form-container" onSubmit={submitHandler}>
-    //   <div>
-    //     <label>Title</label>
-    //     <input
-    //       type="text"
-    //       value={enteredTitle}
-    //       onChange={titleChangeHandler}
-    //     />
-    //   </div>
-    //   <div>
-    //     <label>Amount</label>
-    //     <input
-    //       type="number"
-    //       value={enteredAmount}
-    //       min="0.01"
-    //       step="0.01"
-    //       onChange={amountChangeHandler}
-    //     />
-    //   </div>
-    //   <div>
-    //     <label>Date</label>
-    //     <input type="date" value={enteredDate} onChange={dateChangeHandler} />
-    //   </div>
-    //   <div className="button-flex">
-    //     <button
-    //       className="button-item failure-button"
-    //       onClick={changeEditState}
-    //     >
-    //       Cancel
-    //     </button>
-    //     <button type="submit" className="button-item success-button">
-    //       Submit
-    //     </button>
-    //   </div>
-    // </form>
     <form action="" className="form-expense">
       <div className="show-page-expense">
         <input
