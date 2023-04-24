@@ -3,24 +3,41 @@ import { useDispatch } from "react-redux";
 import "./ExpenseForm.css";
 import { expenseAction } from "../../Store/expenses";
 import AuthContext from "../../Store/auth-context";
-
+import useInput from "./hooks/use-input";
+const isNotEmpty = (value) => value.trim() !== "";
 const ExpenseForm = (props) => {
-  const [enteredTitle, setTitle] = useState("");
-  const [enteredAmount, setAmount] = useState("");
+  const {
+    value: enteredTitle,
+    isValid: enteredTitleIsValid,
+    hasError: enteredTitleHasError,
+    valueChangeHandler: enteredTitleChangeHandler,
+    inputBlurHandler: enteredTitleBlurHandler,
+    reset: resetEnteredTitle,
+  } = useInput(isNotEmpty);
+
+  const {
+    value: enteredAmount,
+    isValid: enteredAmountIsValid,
+    hasError: enteredAmountHasError,
+    valueChangeHandler: enteredAmountChangeHandler,
+    inputBlurHandler: enteredAmountBlurHandler,
+    reset: resetEnteredAmount,
+  } = useInput(isNotEmpty);
+
   const [enteredDate, setDate] = useState("");
   const dispatch = useDispatch();
   const authCtx = useContext(AuthContext);
   const personId = authCtx.personId;
   const token = authCtx.token;
-  const amountChangeHandler = (event) => {
-    setAmount(event.target.value);
-  };
   const dateChangeHandler = (event) => {
     setDate(event.target.value);
   };
-  const titleChangeHandler = (event) => {
-    setTitle(event.target.value);
-  };
+
+  let formIsValid = false;
+
+  if (enteredTitleIsValid && enteredAmountIsValid) {
+    formIsValid = true;
+  }
 
   const addExpense = useCallback(
     async (newExpense) => {
@@ -58,21 +75,24 @@ const ExpenseForm = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (!formIsValid) {
+      return;
+    }
     const newExpense = {
       title: enteredTitle,
       amountDate: enteredDate,
       amount: enteredAmount,
     };
     addExpense(newExpense);
-    setAmount("");
+    resetEnteredAmount();
+    resetEnteredTitle();
     setDate("");
-    setTitle("");
   };
   const changeEditState = (event) => {
     event.preventDefault();
-    setAmount("");
+    resetEnteredAmount();
     setDate("");
-    setTitle("");
+    resetEnteredTitle();
   };
 
   return (
@@ -82,16 +102,24 @@ const ExpenseForm = (props) => {
           className="input-class"
           type="text"
           value={enteredTitle}
-          onChange={titleChangeHandler}
+          onChange={enteredTitleChangeHandler}
+          onBlur={enteredTitleBlurHandler}
           placeholder="Title"
         />
+        {enteredTitleHasError && (
+          <p className="error-text">Please enter a title.</p>
+        )}
         <input
           className="input-class"
           type="number"
           value={enteredAmount}
-          onChange={amountChangeHandler}
+          onChange={enteredAmountChangeHandler}
+          onBlur={enteredAmountBlurHandler}
           placeholder="Amount"
         />
+        {enteredAmountHasError && (
+          <p className="error-text">Please enter an amount.</p>
+        )}
         <input
           className="input-class"
           type="date"
