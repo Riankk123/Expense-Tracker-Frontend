@@ -29,6 +29,17 @@ const expenseSlice = createSlice({
       );
       state.changed = true;
     },
+    updateExpense(state, action) {
+      for (let i = 0; i < state.expenses.length; i++) {
+        if (state.expenses[i].expenseId === action.payload.id) {
+          state.expenses[i].title = action.payload.title;
+          state.expenses[i].amount = action.payload.amount;
+          state.expenses[i].amountDate = action.payload.date;
+          break;
+        }
+      }
+      state.changed = true;
+    },
   },
 });
 

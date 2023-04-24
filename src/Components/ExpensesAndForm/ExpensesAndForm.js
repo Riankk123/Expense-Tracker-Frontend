@@ -13,6 +13,7 @@ const ExpensesAndForm = (props) => {
   const personId = authCtx.personId;
   const token = authCtx.token;
   const dispatch = useDispatch();
+
   const getExpense = useCallback(async () => {
     const response = await fetch(
       "http://localhost:8080/expenses/getExpenses/" + personId,
@@ -25,14 +26,18 @@ const ExpensesAndForm = (props) => {
         },
       }
     );
+
     if (!response.ok) throw new Error("Could Not Fetch Data");
+
     const data = await response.json();
     console.log(data);
+
     dispatch(
       expenseAction.replaceExpense({
         expenses: data,
       })
     );
+    
     return data;
   }, [personId, dispatch, token]);
 
