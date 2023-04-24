@@ -7,6 +7,7 @@ import ExpensesAndForm from "./Components/ExpensesAndForm/ExpensesAndForm";
 import LoginForm from "./Components/Authentication/Login";
 import RegisterForm from "./Components/Authentication/Register";
 import { useContext } from "react";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const authCtx = useContext(AuthContext);
@@ -64,6 +65,7 @@ const App = () => {
           />
         )}
       </Routes>
+      <ToastContainer />
     </div>
   );
 };
