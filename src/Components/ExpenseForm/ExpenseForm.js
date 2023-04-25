@@ -1,10 +1,17 @@
-import { useState, useContext, useCallback } from "react";
+import { useContext, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import "./ExpenseForm.css";
 import { expenseAction } from "../../Store/expenses";
 import AuthContext from "../../Store/auth-context";
 import useInput from "./hooks/use-input";
 const isNotEmpty = (value) => value.trim() !== "";
+const isNotFuture = (value) => {
+  const selected = new Date(value);
+  const maxDate = new Date();
+  maxDate.setHours(0, 0, 0, 0);
+  maxDate.setDate(maxDate.getDate() + 1);
+  return selected < maxDate;
+};
 const ExpenseForm = (props) => {
   const {
     value: enteredTitle,
@@ -24,51 +31,59 @@ const ExpenseForm = (props) => {
     reset: resetEnteredAmount,
   } = useInput(isNotEmpty);
 
-  const [enteredDate, setDate] = useState("");
+  const {
+    value: enteredDate,
+    isValid: enteredDateIsValid,
+    hasError: enteredDateHasError,
+    valueChangeHandler: enteredDateChangeHandler,
+    inputBlurHandler: enteredDateBlurHandler,
+    reset: resetEnteredDate,
+  } = useInput(isNotFuture);
   const dispatch = useDispatch();
   const authCtx = useContext(AuthContext);
   const personId = authCtx.personId;
   const token = authCtx.token;
-  const dateChangeHandler = (event) => {
-    setDate(event.target.value);
-  };
 
   let formIsValid = false;
 
-  if (enteredTitleIsValid && enteredAmountIsValid) {
+  if (enteredTitleIsValid && enteredAmountIsValid && enteredDateIsValid) {
     formIsValid = true;
   }
 
   const addExpense = useCallback(
     async (newExpense) => {
-      const response = await fetch(
-        "http://localhost:8080/expenses/addExpense/" + personId,
-        {
-          crossDomain: true,
-          method: "POST",
-          body: JSON.stringify(newExpense),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const data = await response.json();
-      dispatch(
-        expenseAction.addExpense({
-          id: data.expenseId,
-          title: data.title,
-          amount: data.amount,
-          date: data.amountDate,
-          // month: new Date(data.amountDate).toLocaleString("en-US", {
-          //   month: "short",
-          // }),
-          // day: new Date(data.amountDate).toLocaleString("en-US", {
-          //   day: "2-digit",
-          // }),
-          // year: new Date(data.amountDate).getFullYear(),
-        })
-      );
+      try {
+        const response = await fetch(
+          "http://localhost:8080/expenses/addExpense/" + personId,
+          {
+            crossDomain: true,
+            method: "POST",
+            body: JSON.stringify(newExpense),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const data = await response.json();
+        dispatch(
+          expenseAction.addExpense({
+            id: data.expenseId,
+            title: data.title,
+            amount: data.amount,
+            date: data.amountDate,
+            // month: new Date(data.amountDate).toLocaleString("en-US", {
+            //   month: "short",
+            // }),
+            // day: new Date(data.amountDate).toLocaleString("en-US", {
+            //   day: "2-digit",
+            // }),
+            // year: new Date(data.amountDate).getFullYear(),
+          })
+        );
+      } catch (error) {
+        console.log(error.message);
+      }
     },
     [personId, token, dispatch]
   );
@@ -86,12 +101,12 @@ const ExpenseForm = (props) => {
     addExpense(newExpense);
     resetEnteredAmount();
     resetEnteredTitle();
-    setDate("");
+    resetEnteredDate();
   };
   const changeEditState = (event) => {
     event.preventDefault();
     resetEnteredAmount();
-    setDate("");
+    resetEnteredDate();
     resetEnteredTitle();
   };
 
@@ -124,9 +139,13 @@ const ExpenseForm = (props) => {
           className="input-class"
           type="date"
           value={enteredDate}
-          onChange={dateChangeHandler}
+          onChange={enteredDateChangeHandler}
+          onBlur={enteredDateBlurHandler}
           placeholder="Date"
         />
+        {enteredDateHasError && (
+          <p className="error-text">Date Can't be in future</p>
+        )}
         <div className="button-flex-expense">
           <button onClick={submitHandler}>Submit</button>
           <button onClick={changeEditState}>Reset</button>
