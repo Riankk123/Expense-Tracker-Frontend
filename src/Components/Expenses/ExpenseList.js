@@ -11,10 +11,12 @@ const ExpenseList = (props) => {
   };
   var expensesList = useSelector((state) => state.expense.expenses);
   console.log("ExpenseList : ", expensesList);
+
   expensesList = expensesList.filter(
     (expense) =>
       new Date(expense.amountDate).getFullYear().toString() === filteredYear
   );
+  
   return (
     <div className="container">
       <ExpenseFilter
@@ -36,6 +38,7 @@ const ExpenseList = (props) => {
             })}
             year={new Date(expenses.amountDate).getFullYear()}
             id={expenses.expenseId}
+            date={expenses.amountDate}
           />
         ))}
       {expensesList.length === 0 && (

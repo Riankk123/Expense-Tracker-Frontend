@@ -7,7 +7,7 @@ const ExpenseUnit = (props) => {
     <div className="expense-unit">
       <ExpenseDate day={props.day} month={props.month} year={props.year} />
       <ExpenseTitleAmount amount={props.amount} title={props.title} />
-      <Icons id={props.id} />
+      <Icons id={props.id} amount={props.amount} title={props.title} date={props.date} />
     </div>
   );
 };
