@@ -8,7 +8,6 @@ import Modal from "../UI/Modal";
 import UpdateForm from "./UpdateForm";
 
 const Icons = (props) => {
-  
   const [isUpdating, setIsUpdating] = useState(false);
   const id = props.id;
   const dispatch = useDispatch();
@@ -18,7 +17,8 @@ const Icons = (props) => {
   const deleteExpenseBackend = useCallback(
     async (id) => {
       const response = await fetch(
-        "http://localhost:8080/expenses/deleteExpense/" + id,
+        "https://unknown-umbrella-production.up.railway.app/expenses/deleteExpense/" +
+          id,
         {
           crossDomain: true,
           method: "DELETE",
@@ -45,7 +45,13 @@ const Icons = (props) => {
     <div>
       {isUpdating && (
         <Modal onClose={() => setIsUpdating(false)}>
-          <UpdateForm onCancel={() => setIsUpdating(false)} title={props.title} amount={props.amount} date={props.date} id={id} />
+          <UpdateForm
+            onCancel={() => setIsUpdating(false)}
+            title={props.title}
+            amount={props.amount}
+            date={props.date}
+            id={id}
+          />
         </Modal>
       )}
       <AiFillEdit

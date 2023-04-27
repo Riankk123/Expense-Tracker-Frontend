@@ -76,18 +76,21 @@ const RegisterForm = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:8080/person/addPerson", {
-        method: "POST",
-        body: JSON.stringify({
-          name: enteredName,
-          emailId: enteredEmail,
-          password: enteredPassword,
-          age: enteredAge,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://unknown-umbrella-production.up.railway.app/person/addPerson",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name: enteredName,
+            emailId: enteredEmail,
+            password: enteredPassword,
+            age: enteredAge,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Registration failed");
