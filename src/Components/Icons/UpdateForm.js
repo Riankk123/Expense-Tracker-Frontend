@@ -21,7 +21,6 @@ function formatDate(date) {
 }
 
 const UpdateForm = (props) => {
-    
   const [formInputsValidity, setFormInputsValidity] = useState({
     titleVal: true,
     amountVal: true,
@@ -60,7 +59,8 @@ const UpdateForm = (props) => {
     }
 
     const response = await fetch(
-      `http://localhost:8080/expenses/updateExpense/${props.id}`,
+      `https://unknown-umbrella-production.up.railway.app
+/expenses/updateExpense/${props.id}`,
       {
         method: "PUT",
         body: JSON.stringify({
@@ -123,7 +123,9 @@ const UpdateForm = (props) => {
           onChange={(event) => setAmount(event.target.value)}
           value={amount}
         />
-        {!formInputsValidity.amountVal && <p className={classes.adjust}>Please enter a valid amount!</p>}
+        {!formInputsValidity.amountVal && (
+          <p className={classes.adjust}>Please enter a valid amount!</p>
+        )}
       </div>
       <div className={dateControlClasses}>
         <label htmlFor="date">Date</label>

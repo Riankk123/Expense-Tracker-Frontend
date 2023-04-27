@@ -53,16 +53,19 @@ const LoginForm = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:8080/authenticate", {
-        method: "POST",
-        body: JSON.stringify({
-          emailId: enteredEmail,
-          password: enteredPassword,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://unknown-umbrella-production.up.railway.app/authenticate",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            emailId: enteredEmail,
+            password: enteredPassword,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("You provided an incorrect email or password");
