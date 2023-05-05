@@ -18,3 +18,10 @@ h2 {
 h3 {
   margin: 0;
 }
+@media (max-width: 550px) {
+  .expense-date {
+    border-radius: 20px;
+    display: flex;
+    font-size: 15px;
+  }
+}
