@@ -18,7 +18,7 @@ const Icons = (props) => {
     async (id) => {
       const response = await fetch(
         "https://unknown-umbrella-production.up.railway.app/expenses/deleteExpense/" +
-          id,
+          +id,
         {
           crossDomain: true,
           method: "DELETE",

@@ -7,3 +7,10 @@
   color: #e5f7ab;
   margin: 0;
 }
+@media (max-width: 550px) {
+  .fonts {
+    font-size: 40px;
+    color: #e5f7ab;
+    margin: 0;
+  }
+}

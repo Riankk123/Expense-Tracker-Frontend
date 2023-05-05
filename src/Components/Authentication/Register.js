@@ -78,6 +78,7 @@ const RegisterForm = () => {
     try {
       const response = await fetch(
         "https://unknown-umbrella-production.up.railway.app/person/addPerson",
+
         {
           method: "POST",
           body: JSON.stringify({

@@ -60,7 +60,8 @@ const UpdateForm = (props) => {
 
     const response = await fetch(
       `https://unknown-umbrella-production.up.railway.app
-/expenses/updateExpense/${props.id}`,
+       /expenses/updateExpense/${props.id}`,
+
       {
         method: "PUT",
         body: JSON.stringify({

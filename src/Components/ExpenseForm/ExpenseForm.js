@@ -54,7 +54,9 @@ const ExpenseForm = (props) => {
     async (newExpense) => {
       try {
         const response = await fetch(
-          "https://unknown-umbrella-production.up.railway.app/expenses/addExpense/" + personId,
+          "https://unknown-umbrella-production.up.railway.app/expenses/addExpense/" +
+            personId,
+
           {
             crossDomain: true,
             method: "POST",

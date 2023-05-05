@@ -40,3 +40,10 @@
 .button-88:active {
   box-shadow: 0 0.3em 1em -0.5em #14a73e98;
 }
+@media (max-width: 550px) {
+  .head {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+  }
+}
