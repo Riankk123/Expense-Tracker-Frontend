@@ -16,7 +16,7 @@ const ExpensesAndForm = (props) => {
 
   const getExpense = useCallback(async () => {
     const response = await fetch(
-      "https://unknown-umbrella-production.up.railway.app/expenses/getExpenses/" +
+      "http://localhost:8080/expenses/getExpenses/" +
         personId,
       {
         crossDomain: true,

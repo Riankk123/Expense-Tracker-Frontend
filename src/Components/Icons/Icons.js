@@ -17,7 +17,7 @@ const Icons = (props) => {
   const deleteExpenseBackend = useCallback(
     async (id) => {
       const response = await fetch(
-        "https://unknown-umbrella-production.up.railway.app/expenses/deleteExpense/" +
+        "http://localhost:8080/expenses/deleteExpense/" +
           id,
         {
           crossDomain: true,

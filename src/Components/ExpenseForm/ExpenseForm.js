@@ -54,7 +54,7 @@ const ExpenseForm = (props) => {
     async (newExpense) => {
       try {
         const response = await fetch(
-          "https://unknown-umbrella-production.up.railway.app/expenses/addExpense/" +
+          "http://localhost:8080/expenses/addExpense/" +
             personId,
 
           {
