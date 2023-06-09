@@ -57,6 +57,7 @@ const ExpenseForm = (props) => {
   const addExpense = useCallback(
     async (newExpense) => {
       try {
+        setDateType("text");
         const response = await fetch(
           "http://localhost:8080/expenses/addExpense/" + personId,
 
@@ -70,6 +71,7 @@ const ExpenseForm = (props) => {
             },
           }
         );
+
         const data = await response.json();
         dispatch(
           expenseAction.addExpense({
@@ -86,7 +88,6 @@ const ExpenseForm = (props) => {
             // year: new Date(data.amountDate).getFullYear(),
           })
         );
-        setDateType("text");
       } catch (error) {
         console.log(error.message);
       }
