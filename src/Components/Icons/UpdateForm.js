@@ -3,6 +3,8 @@ import classes from "./UpdateForm.module.css";
 import AuthContext from "../../Store/auth-context";
 import { useDispatch, useSelector } from "react-redux";
 import { expenseAction } from "../../Store/expenses";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const isEmpty = (value) => value.trim() === "";
 const inPast = (value) =>
@@ -59,9 +61,7 @@ const UpdateForm = (props) => {
     }
 
     const response = await fetch(
-      `https://unknown-umbrella-production.up.railway.app
-       /expenses/updateExpense/${props.id}`,
-
+      `https://unknown-umbrella-production.up.railway.app/expenses/updateExpense/${props.id}`,
       {
         method: "PUT",
         body: JSON.stringify({
@@ -77,6 +77,7 @@ const UpdateForm = (props) => {
     );
 
     if (!response.ok) {
+      toast.error("Failed to fetch!");
       throw new Error("Failed to update");
     }
 
@@ -91,6 +92,7 @@ const UpdateForm = (props) => {
       })
     );
 
+    toast.success("Updated Successfully!");
     props.onCancel();
   };
 
@@ -142,7 +144,9 @@ const UpdateForm = (props) => {
         <button type="button" onClick={props.onCancel}>
           Cancel
         </button>
-        <button className={classes.submit}>Update</button>
+        <button type="submit" className={classes.submit}>
+          Update
+        </button>
       </div>
     </form>
   );

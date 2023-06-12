@@ -101,7 +101,9 @@ const RegisterForm = () => {
       resetEnteredEmail();
       resetEnteredName();
       resetEnteredPassword();
-      navigate("/login");
+      navigate("/login", {
+        replace: true,
+      });
       successfulRegister();
     } catch (error) {
       console.log(error.message);
@@ -156,14 +158,18 @@ const RegisterForm = () => {
           <button className="centre" type="submit">
             Register
           </button>
-          <button
-            onClick={() => {
-              navigate("login");
-            }}
-            className="alternate_div"
-          >
-            Login
-          </button>
+          <p className="login">
+            Already a user?
+            <a
+              onClick={() => {
+                navigate("/login", {
+                  replace: true,
+                });
+              }}
+            >
+              Sign In
+            </a>
+          </p>
         </div>
       </form>
     </div>

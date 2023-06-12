@@ -1,4 +1,4 @@
-import { useContext, useCallback } from "react";
+import { useContext, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import "./ExpenseForm.css";
 import { expenseAction } from "../../Store/expenses";
@@ -13,6 +13,10 @@ const isNotFuture = (value) => {
   return selected < maxDate;
 };
 const ExpenseForm = (props) => {
+  const [dateType, setDateType] = useState("text");
+  const dateTypeHandler = () => {
+    setDateType("date");
+  };
   const {
     value: enteredTitle,
     isValid: enteredTitleIsValid,
@@ -53,9 +57,9 @@ const ExpenseForm = (props) => {
   const addExpense = useCallback(
     async (newExpense) => {
       try {
+        setDateType("text");
         const response = await fetch(
-          "https://unknown-umbrella-production.up.railway.app/expenses/addExpense/" +
-            personId,
+          "https://unknown-umbrella-production.up.railway.app/expenses/addExpense/" + personId,
 
           {
             crossDomain: true,
@@ -67,6 +71,7 @@ const ExpenseForm = (props) => {
             },
           }
         );
+
         const data = await response.json();
         dispatch(
           expenseAction.addExpense({
@@ -139,10 +144,11 @@ const ExpenseForm = (props) => {
         )}
         <input
           className="input-class"
-          type="date"
+          type={dateType}
           value={enteredDate}
           onChange={enteredDateChangeHandler}
           onBlur={enteredDateBlurHandler}
+          onClick={dateTypeHandler}
           placeholder="Date"
         />
         {enteredDateHasError && (

@@ -83,7 +83,9 @@ const LoginForm = () => {
       resetEnteredPassword();
       console.log("Successfully logged in");
       successfulLogin();
-      navigate(`/home/${data.personId}`);
+      navigate(`/home/${data.personId}`, {
+        replace: true,
+      });
     } catch (error) {
       console.log(error.message);
       errorLogin(error.message);
@@ -116,15 +118,18 @@ const LoginForm = () => {
           <button className="centre" type="submit">
             Login
           </button>
-
-          <button
-            onClick={() => {
-              navigate("/");
-            }}
-            className="alternate_div"
-          >
-            Register
-          </button>
+          <p className="register">
+            Not have an account? 
+            <a
+              onClick={() => {
+                navigate("/", {
+                  replace: true,
+                });
+              }}
+            >
+              Create Account
+            </a>
+          </p>
         </div>
       </form>
     </div>

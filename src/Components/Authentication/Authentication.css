@@ -70,11 +70,9 @@ input:focus {
 }
 
 .form a {
-  color: white;
-  text-decoration: none;
-  display: block;
-  margin: 15px;
-  text-align: center;
+  color: rgb(34, 100, 255);
+  text-decoration: underline;
+  margin: 2px;
   transition: 0.5s;
 }
 .alternate_div {
@@ -92,10 +90,25 @@ input:focus {
   color: royalblue;
 }
 
+.login {
+  font-size: 14px;
+  text-align: center;
+  color: white;
+  font-family: Lucida Sans;
+}
+
 .show-page {
   display: block;
   animation: show-page 1s;
   text-align: center;
+}
+
+.register {
+  color: white;
+  text-align: left;
+  margin-left: 30px;
+  font-size: 14px;
+  font-family: Lucida Sans;
 }
 
 @keyframes show-page {
