@@ -54,7 +54,7 @@ const LoginForm = () => {
     }
     try {
       const response = await fetch(
-        "http://localhost:8080/authenticate",
+        "https://unknown-umbrella-production.up.railway.app/authenticate",
         {
           method: "POST",
           body: JSON.stringify({

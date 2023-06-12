@@ -59,7 +59,7 @@ const ExpenseForm = (props) => {
       try {
         setDateType("text");
         const response = await fetch(
-          "http://localhost:8080/expenses/addExpense/" + personId,
+          "https://unknown-umbrella-production.up.railway.app/expenses/addExpense/" + personId,
 
           {
             crossDomain: true,

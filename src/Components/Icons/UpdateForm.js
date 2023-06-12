@@ -61,7 +61,7 @@ const UpdateForm = (props) => {
     }
 
     const response = await fetch(
-      `http://localhost:8080/expenses/updateExpense/${props.id}`,
+      `https://unknown-umbrella-production.up.railway.app/expenses/updateExpense/${props.id}`,
       {
         method: "PUT",
         body: JSON.stringify({
